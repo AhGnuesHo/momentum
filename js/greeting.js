@@ -1,6 +1,7 @@
 const loginForm = document.querySelector("#login-form");
 const loginInput = document.querySelector("#login-form input");
 const greeting = document.querySelector("#greeting");
+const logoutButton = document.querySelector("#logout");
 
 const HIDDEN_CLASSNAME = "hidden";
 const USER_NAME_KEY = "username";
@@ -14,11 +15,32 @@ function onLoginSubmit(event) {
     const username = loginInput.value;
     localStorage.setItem(USER_NAME_KEY, username);
     PaintGreeting(username);
+    showLogout();
 }
 
 function PaintGreeting(username) {
-    greeting.innerText = `Hello ${username} !!`;
+    const date = new Date();
+    const hours = date.getHours();
+    if (hours <= 11){
+      greeting.innerText = `Good Moring ${username} !!`;
+    } else if(hours >= 12 && hours <= 18){
+      greeting.innerText = `Good Afternoon ${username} !!`;
+    } else {
+      greeting.innerText = `Good Night ${username} !!`;
+    }
     greeting.classList.remove(HIDDEN_CLASSNAME);
+}
+
+// 로그아웃 버튼 
+function showLogout(){
+    //로그아웃 버튼 노출
+    logoutButton.classList.remove(HIDDEN_CLASSNAME);
+    logoutButton.addEventListener("click", logout);
+}
+
+function logout(){
+  localStorage.clear();
+  location.reload();
 }
 
 if (savedUsername === null) {
@@ -32,8 +54,8 @@ if (savedUsername === null) {
 } else {
     // hello username
     PaintGreeting(savedUsername);
+    showLogout();
 }
-
 
 
 
